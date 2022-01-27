@@ -53,7 +53,25 @@
             <!-- Task: show questions and choices -->
             <!-- <HINT> Use Bootstrap Collapse to hide exam first, more details could be found here
             https://www.w3schools.com/bootstrap4/bootstrap_collapse.asp-->
+            
+            {% if user.is_authenticated %}
+            <a href="#demo" class="btn btn-primary btn-block" data-toggle="collapse">Start Exam</a>
+            <div id="demo" class="collapse">
+                <div class="card-columns-vertical">
+                    <p>Questions</p>
 
+                    {% for lesson in course.question_set.all %}
+                        <div class="card mt-1">
+                            <div class="card-header"><h5>Lesson : {{lesson.text}}</h5></div>
+                            <div class="card-body">{{lesson.content}}</div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+            
+            {% else %}
+            <p>User is not authenticated</p>
+            {% endif %}
             <!--
 
             A collapse example here:
