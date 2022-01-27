@@ -58,19 +58,34 @@
             <a href="#demo" class="btn btn-primary btn-block" data-toggle="collapse">Start Exam</a>
             <div id="demo" class="collapse">
                 <div class="card-columns-vertical">
-                    <p>Questions</p>
-
-                    {% for lesson in course.question_set.all %}
+                    <form id="questionform" action="point to a submit view" method="post">  
+                    {% for question in course.question_set.all %}
                         <div class="card mt-1">
-                            <div class="card-header"><h5>Lesson : {{lesson.text}}</h5></div>
-                            <div class="card-body">{{lesson.content}}</div>
+                            <div class="card-header"><h5>{{question.text}}</h5></div>
+                            <div class="card-body">
+                                {% csrf_token %}
+                                <div class="form-group">
+                                    {% for choice in question.choice_set.all%}
+                                     <div class="form-check">
+                                         <label class="form-check-label">
+                                             <input type="checkbox" name="choice_{{choice.id}}"
+                                                    class="form-check-input" id="{{choice.id}}"
+                                                    value="{{choice.id}}">{{ choice.choice_text }}
+                                         </label>
+                                     </div>
+                                     {% endfor %}
+                                 </div>
+                                
+                            </div>
                         </div>
                     {% endfor %}
+                    <input class="btn btn-success btn-block" type="submit" value="Submit">
+                    </form>
                 </div>
             </div>
-            
             {% else %}
-            <p>User is not authenticated</p>
+            <p>Please sign in and enroll in course to view questions </p>
+
             {% endif %}
             <!--
 
